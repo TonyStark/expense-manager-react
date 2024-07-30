@@ -1,0 +1,4 @@
+a.active *:first-child {
+  background-color: #03c988; /* Replace with your desired color */
+  color: #0c0c0c;
+}
