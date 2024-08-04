@@ -3,7 +3,9 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App.jsx";
 import "./index.css";
+import { Provider } from "react-redux";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import myStore from "./Store/store.js";
 const theme = extendTheme({
   fonts: {
     body: "'Poppins', sans-serif",
@@ -21,8 +23,10 @@ const theme = extendTheme({
 });
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ChakraProvider theme={theme}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Provider store={myStore}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </ChakraProvider>
 );

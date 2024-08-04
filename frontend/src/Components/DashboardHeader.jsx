@@ -8,6 +8,7 @@ import axios from "axios";
 function DashboardHeader({ onMenuClick }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const [expenseData, setExpensesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     expenseAmount: "",
