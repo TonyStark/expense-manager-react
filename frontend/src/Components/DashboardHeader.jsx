@@ -5,10 +5,9 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import Food from "../assets/img/food3.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
-function DashboardHeader({ onMenuClick }) {
+function DashboardHeader({ onMenuClick, onExpenseAdded }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const [expenseData, setExpensesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     expenseAmount: "",
@@ -37,7 +36,7 @@ function DashboardHeader({ onMenuClick }) {
 
     try {
       setIsLoading(true);
-      axios.post("http://localhost:5500/api/expenses", formData);
+      await axios.post("http://localhost:5500/api/expenses", formData);
       // console.log(formData);
       toast({
         title: "Expense Added",
@@ -52,8 +51,8 @@ function DashboardHeader({ onMenuClick }) {
         expenseNotes: "",
         userId: localStorage.getItem("uuid"),
       });
-      fetchExpenses();
       onClose();
+      await onExpenseAdded();
     } catch (error) {
       console.error(error);
     } finally {
@@ -61,18 +60,6 @@ function DashboardHeader({ onMenuClick }) {
     }
   };
 
-  const fetchExpenses = async () => {
-    // setIsLoading(true);
-    try {
-      const response = await axios.get(`http://localhost:5500/api/expenses?uuid=${localStorage.getItem("uuid")}`);
-      setExpensesData(response.data.user);
-      console.log(expenseData);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      // setIsLoading(false);
-    }
-  };
   return (
     <>
       <Box bg="#151515">
@@ -111,7 +98,8 @@ function DashboardHeader({ onMenuClick }) {
                     </InputLeftElement>
                     <Input onChange={handleChange} type="number" placeholder="Enter amount" name="expenseAmount" focusBorderColor="#03C988" />
                   </InputGroup>
-
+                  <FormLabel mt="3">Expense On</FormLabel>
+                  <Input onChange={handleChange} placeholder="Expense Name" name="expenseNotes" focusBorderColor="#03C988" />
                   <FormLabel mt="3">Expense Category</FormLabel>
                   <Select placeholder="Select Category" onChange={handleChange} name="expenseName" mt="2">
                     <option value="Food">Food</option>
@@ -128,8 +116,6 @@ function DashboardHeader({ onMenuClick }) {
                   </Select>
                   <FormLabel mt="3">Date</FormLabel>
                   <Input onChange={handleChange} type="date" name="expenseDate" focusBorderColor="#03C988" />
-                  <FormLabel mt="3">Notes</FormLabel>
-                  <Textarea onChange={handleChange} placeholder="Any Notes..." name="expenseNotes" focusBorderColor="#03C988" />
                   <ButtonGroup spacing="4" w="full">
                     <Button isLoading={isLoading} loadingText="Adding" textColor={"#0c0c0c"} bg="#03C988" mt="5" w="full" type="submit">
                       Add Expense

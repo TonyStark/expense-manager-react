@@ -14,33 +14,83 @@ import Education from "../assets/img/2097055.png";
 import Other from "../assets/img/2779847.png";
 import axios from "axios";
 
-function Dashboard() {
-  const [expenseData, setExpensesData] = useState([]);
+function Dashboard({ expenseData: propExpenseData }) {
+  const [expensesData, setExpensesData] = useState(propExpenseData || []);
   const [foodExpense, setFoodExpense] = useState(0);
-  const fetchExpenses = async () => {
-    // setIsLoading(true);
-    try {
-      const response = await axios.get(`http://localhost:5500/api/expenses?uuid=${localStorage.getItem("uuid")}`);
-      setExpensesData(response.data.user);
-      console.log(expenseData);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      // setIsLoading(false);
-    }
-  };
+  const [fuelExpense, setFuelExpense] = useState(0);
+  const [travelExpense, setTravelExpense] = useState(0);
+  const [maintenanceExpense, setMaintenanceExpense] = useState(0);
+  const [rentExpense, setRentExpense] = useState(0);
+  const [electricityExpense, setElectricityExpense] = useState(0);
+  const [entertainmentExpense, setEntertainmentExpense] = useState(0);
+  const [healthExpense, setHealthExpense] = useState(0);
+  const [educationExpense, setEducationExpense] = useState(0);
+  const [giftsExpense, setGiftsExpense] = useState(0);
+  const [otherExpense, setOtherExpense] = useState(0);
   useEffect(() => {
-    fetchExpenses();
-  }, []);
+    setExpensesData(propExpenseData);
+  }, [propExpenseData]);
   useEffect(() => {
     let totalFoodExpense = 0;
-    expenseData.forEach((exp) => {
-      if (exp.expenseName === "Food") {
-        totalFoodExpense += exp.expenseAmount;
+    let totalFuelExpense = 0;
+    let totalTravelExpense = 0;
+    let totalMaintenanceExpense = 0;
+    let totalRentExpense = 0;
+    let totalElectricityExpense = 0;
+    let totalEntertainmentExpense = 0;
+    let totalHealthExpense = 0;
+    let totalEducationExpense = 0;
+    let totalGiftsExpense = 0;
+    let totalOtherExpense = 0;
+    expensesData.forEach((exp) => {
+      switch (exp.expenseName) {
+        case "Food":
+          totalFoodExpense += exp.expenseAmount;
+          break;
+        case "Fuel":
+          totalFuelExpense += exp.expenseAmount;
+          break;
+        case "Travel":
+          totalTravelExpense += exp.expenseAmount;
+          break;
+        case "Maintenance":
+          totalMaintenanceExpense += exp.expenseAmount;
+          break;
+        case "Rent":
+          totalRentExpense += exp.expenseAmount;
+          break;
+        case "Electricity":
+          totalElectricityExpense += exp.expenseAmount;
+          break;
+        case "Entertainment":
+          totalEntertainmentExpense += exp.expenseAmount;
+          break;
+        case "Health":
+          totalHealthExpense += exp.expenseAmount;
+          break;
+        case "Education":
+          totalEducationExpense += exp.expenseAmount;
+          break;
+        case "Gifts":
+          totalGiftsExpense += exp.expenseAmount;
+          break;
+        default:
+          totalOtherExpense += exp.expenseAmount;
+          break;
       }
     });
     setFoodExpense(totalFoodExpense);
-  }, [expenseData]);
+    setFuelExpense(totalFuelExpense);
+    setTravelExpense(totalTravelExpense);
+    setMaintenanceExpense(totalMaintenanceExpense);
+    setRentExpense(totalRentExpense);
+    setElectricityExpense(totalElectricityExpense);
+    setEntertainmentExpense(totalEntertainmentExpense);
+    setHealthExpense(totalHealthExpense);
+    setEducationExpense(totalEducationExpense);
+    setGiftsExpense(totalGiftsExpense);
+    setOtherExpense(totalOtherExpense);
+  }, [expensesData]);
 
   return (
     <>
@@ -64,7 +114,7 @@ function Dashboard() {
                 Fuel
               </Text>
             </Box>
-            <Heading>0₹</Heading>
+            <Heading>{fuelExpense}₹</Heading>
           </Flex>
 
           <Flex alignItems={"center"} justifyContent={"space-between"} bg="#0C0C0C" border={"1px"} borderColor={"#03C988"} borderRadius={"md"} p="3">
@@ -74,7 +124,7 @@ function Dashboard() {
                 Travel
               </Text>
             </Box>
-            <Heading>0₹</Heading>
+            <Heading>{travelExpense}₹</Heading>
           </Flex>
           <Flex alignItems={"center"} justifyContent={"space-between"} bg="#0C0C0C" border={"1px"} borderColor={"#03C988"} borderRadius={"md"} p="3">
             <Box flexShrink={0} textAlign={"center"}>
@@ -83,7 +133,7 @@ function Dashboard() {
                 Maintenance
               </Text>
             </Box>
-            <Heading>0₹</Heading>
+            <Heading>{maintenanceExpense}₹</Heading>
           </Flex>
           <Flex alignItems={"center"} justifyContent={"space-between"} bg="#0C0C0C" border={"1px"} borderColor={"#03C988"} borderRadius={"md"} p="3">
             <Box flexShrink={0} textAlign={"center"}>
@@ -92,7 +142,7 @@ function Dashboard() {
                 Rent
               </Text>
             </Box>
-            <Heading>0₹</Heading>
+            <Heading>{rentExpense}₹</Heading>
           </Flex>
           <Flex alignItems={"center"} justifyContent={"space-between"} bg="#0C0C0C" border={"1px"} borderColor={"#03C988"} borderRadius={"md"} p="3">
             <Box flexShrink={0} textAlign={"center"}>
@@ -101,7 +151,7 @@ function Dashboard() {
                 Electricity
               </Text>
             </Box>
-            <Heading>0₹</Heading>
+            <Heading>{electricityExpense}₹</Heading>
           </Flex>
           <Flex alignItems={"center"} justifyContent={"space-between"} bg="#0C0C0C" border={"1px"} borderColor={"#03C988"} borderRadius={"md"} p="3">
             <Box flexShrink={0} textAlign={"center"}>
@@ -110,7 +160,7 @@ function Dashboard() {
                 Entertainment
               </Text>
             </Box>
-            <Heading>0₹</Heading>
+            <Heading>{entertainmentExpense}₹</Heading>
           </Flex>
           <Flex alignItems={"center"} justifyContent={"space-between"} bg="#0C0C0C" border={"1px"} borderColor={"#03C988"} borderRadius={"md"} p="3">
             <Box flexShrink={0} textAlign={"center"}>
@@ -119,7 +169,7 @@ function Dashboard() {
                 Health
               </Text>
             </Box>
-            <Heading>0₹</Heading>
+            <Heading>{healthExpense}₹</Heading>
           </Flex>
           <Flex alignItems={"center"} justifyContent={"space-between"} bg="#0C0C0C" border={"1px"} borderColor={"#03C988"} borderRadius={"md"} p="3">
             <Box flexShrink={0} textAlign={"center"}>
@@ -128,7 +178,7 @@ function Dashboard() {
                 Education
               </Text>
             </Box>
-            <Heading>0₹</Heading>
+            <Heading>{educationExpense}₹</Heading>
           </Flex>
           <Flex alignItems={"center"} justifyContent={"space-between"} bg="#0C0C0C" border={"1px"} borderColor={"#03C988"} borderRadius={"md"} p="3">
             <Box flexShrink={0} textAlign={"center"}>
@@ -137,7 +187,7 @@ function Dashboard() {
                 Gifts
               </Text>
             </Box>
-            <Heading>0₹</Heading>
+            <Heading>{giftsExpense}₹</Heading>
           </Flex>
           <Flex alignItems={"center"} justifyContent={"space-between"} bg="#0C0C0C" border={"1px"} borderColor={"#03C988"} borderRadius={"md"} p="3">
             <Box flexShrink={0} textAlign={"center"}>
@@ -146,7 +196,7 @@ function Dashboard() {
                 Other
               </Text>
             </Box>
-            <Heading>0₹</Heading>
+            <Heading>{otherExpense}₹</Heading>
           </Flex>
         </SimpleGrid>
         <Box display={{ base: "block", lg: "none" }} height="50px" />
